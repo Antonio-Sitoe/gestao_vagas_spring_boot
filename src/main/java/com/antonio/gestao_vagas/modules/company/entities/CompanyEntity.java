@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 @Data
@@ -21,10 +22,12 @@ public class CompanyEntity {
   @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "O campo deve conter apenas letras e números")
   private String username;
 
+  @NotBlank(message = "O campo email é obrigatório")
   @Email(message = "O campo deve conter um email válido")
   private String email;
 
-  @Length(min = 8, max = 12, message = "A senha deve conter entre 8 e 12 caracteres")
+  @NotBlank(message = "O campo password é obrigatório")
+  @Length(min = 8, message = "A senha deve conter no mínimo 8 caracteres")
   private String password;
 
   private String description;

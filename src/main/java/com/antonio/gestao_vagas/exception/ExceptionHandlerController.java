@@ -22,4 +22,9 @@ public class ExceptionHandlerController {
       });
       return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
    }
+
+   @ExceptionHandler(UserFoundException.class)
+   public ResponseEntity<String> handleUserFoundException(UserFoundException ex) {
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+   }
 }
