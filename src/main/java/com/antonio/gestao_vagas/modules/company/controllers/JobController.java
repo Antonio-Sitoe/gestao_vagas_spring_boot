@@ -1,17 +1,20 @@
 package com.antonio.gestao_vagas.modules.company.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.UUID;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.antonio.gestao_vagas.modules.company.dto.CreateJobDTO;
 import com.antonio.gestao_vagas.modules.company.entities.JobEntity;
 import com.antonio.gestao_vagas.modules.company.useCases.CreateJobUseCase;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/job")
@@ -21,12 +24,15 @@ public class JobController {
   private CreateJobUseCase createJobUseCase;
 
   @PostMapping("")
-  public ResponseEntity<Object> create(@Valid @RequestBody JobEntity job) {
-    try {
-      JobEntity jobSaved = this.createJobUseCase.execute(job);
-      return ResponseEntity.status(HttpStatus.CREATED).body(jobSaved);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
+  public JobEntity create(@Valid @RequestBody CreateJobDTO job, HttpServletRequest request) {
+    var companyId = request.getAttribute("company_id");
+    JobEntity jobEntity = JobEntity.builder()
+        .benefits(job.getBenefits())
+        .companyId(UUID.fromString(companyId.toString()))
+        .description(job.getDescription())
+        .level(job.getLevel())
+        .build();
+
+    return this.createJobUseCase.execute(jobEntity);
   }
 }

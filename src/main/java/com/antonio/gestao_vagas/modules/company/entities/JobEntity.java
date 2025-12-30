@@ -3,7 +3,10 @@ package com.antonio.gestao_vagas.modules.company.entities;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,8 +17,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import org.hibernate.annotations.CreationTimestamp;
 
-@Data
 @Entity(name = "job")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class JobEntity {
 
   @Id
