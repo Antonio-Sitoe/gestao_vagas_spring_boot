@@ -43,11 +43,12 @@ public class AuthCandidateUseCase {
         .withIssuer("gestao_vagas")
         .withExpiresAt(Instant.now().plus(Duration.ofHours(24)))
         .withSubject(candidate.getId().toString())
-        .withClaim("roles", Arrays.asList())
+        .withClaim("roles", Arrays.asList("CANDIDATE"))
         .sign(Algorithm.HMAC256(secretKey));
 
     return AuthCandidateResponseDTO.builder()
         .access_token(token)
+        .expire_in(Instant.now().plus(Duration.ofMillis(10)).toEpochMilli())
         .build();
   }
 

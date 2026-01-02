@@ -9,4 +9,5 @@ import lombok.Data;
 @Builder
 public class AuthCandidateResponseDTO {
   private String access_token;
+  private Long expire_in;
 }
