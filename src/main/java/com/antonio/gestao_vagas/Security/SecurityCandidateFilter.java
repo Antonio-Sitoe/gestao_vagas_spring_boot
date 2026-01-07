@@ -22,6 +22,15 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
   private JwtCandidateProvider jwtProvider;
 
   @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) {
+    String path = request.getRequestURI();
+    return path.startsWith("/swagger-ui") ||
+        path.startsWith("/v3/api-docs") ||
+        path.startsWith("/swagger-resources") ||
+        path.startsWith("/webjars");
+  }
+
+  @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     String header = request.getHeader("Authorization");

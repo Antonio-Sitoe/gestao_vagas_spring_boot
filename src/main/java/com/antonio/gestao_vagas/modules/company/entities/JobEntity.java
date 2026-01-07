@@ -17,6 +17,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import org.hibernate.annotations.CreationTimestamp;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity(name = "job")
 @Data
 @Builder
@@ -28,10 +30,13 @@ public class JobEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  @Schema(description = "Vaga para pessoa desenvolvedora", example = "Frontend Developer")
   private String description;
+  @Schema(description = "Beneficios da vaga", example = "Plano de saude, VR, VA, etc.")
   private String benefits;
 
   @NotBlank
+  @Schema(description = "Nivel da vaga", example = "Junior, Pleno, Senior")
   private String level;
 
   @ManyToOne

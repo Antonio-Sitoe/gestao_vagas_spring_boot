@@ -3,8 +3,6 @@ package com.antonio.gestao_vagas.modules.company.controllers;
 import java.util.UUID;
 import jakarta.validation.Valid;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +16,12 @@ import com.antonio.gestao_vagas.modules.company.dto.CreateJobDTO;
 import com.antonio.gestao_vagas.modules.company.entities.JobEntity;
 import com.antonio.gestao_vagas.modules.company.useCases.CreateJobUseCase;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
 @RequestMapping("/company/job")
 public class JobController {
@@ -27,6 +31,13 @@ public class JobController {
 
   @PostMapping("")
   @PreAuthorize("hasRole('COMPANY')")
+  @Tag(name = "Company", description = "Funcao responsavel por criar uma nova vaga")
+  @Operation(summary = "Cria uma nova vaga")
+  @SecurityRequirement(name = "bearerAuth")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Vaga criada com sucesso"),
+      @ApiResponse(responseCode = "400", description = "Erro ao criar vaga"),
+  })
   public JobEntity create(@Valid @RequestBody CreateJobDTO job, HttpServletRequest request) {
     var companyId = request.getAttribute("company_id");
     JobEntity jobEntity = JobEntity.builder()

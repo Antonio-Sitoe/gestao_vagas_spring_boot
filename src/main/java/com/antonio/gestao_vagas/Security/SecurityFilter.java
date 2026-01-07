@@ -1,7 +1,6 @@
 package com.antonio.gestao_vagas.Security;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
   @Autowired
   private JwtProvider jwtProvider;
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) {
+    String path = request.getRequestURI();
+    return path.startsWith("/swagger-ui") ||
+        path.startsWith("/v3/api-docs") ||
+        path.startsWith("/swagger-resources") ||
+        path.startsWith("/webjars");
+  }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
