@@ -1,9 +1,15 @@
 package com.antonio.gestao_vagas.modules.company.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateJobDTO {
   @Schema(description = "Vaga para pessoa desenvolvedora", example = "Frontend Developer")
   private String description;

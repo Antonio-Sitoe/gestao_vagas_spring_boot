@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.antonio.gestao_vagas.modules.candidate.CandidateEntity;
+import com.antonio.gestao_vagas.modules.candidate.useCases.ApplyJobCandidateUseCase;
 import com.antonio.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import com.antonio.gestao_vagas.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import com.antonio.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -33,6 +34,9 @@ import java.util.UUID;
 @RequestMapping("/candidate")
 @Tag(name = "Candidate", description = "Endpoints para o candidato")
 public class CandidateController {
+
+  @Autowired
+  private ApplyJobCandidateUseCase applyJobCandidateUseCase;
 
   @Autowired
   private ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
@@ -91,6 +95,20 @@ public class CandidateController {
     try {
       var jobs = this.listAllJobsByFilterUseCase.execute(filter);
       return ResponseEntity.status(HttpStatus.OK).body(jobs);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  }
+
+  @PostMapping("/job/apply")
+  @PreAuthorize("hasRole('CANDIDATE')")
+  @Operation(summary = "Inscricao do candidato para uma vaga", description = "Funcao responsavel para a inscricao de um candidato a uma vaga.")
+  @SecurityRequirement(name = "bearerAuth")
+  public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID idJob) {
+    var idCandidate = request.getAttribute("candidate_id");
+    try {
+      var result = this.applyJobCandidateUseCase.execute(UUID.fromString(idCandidate.toString()), idJob);
+      return ResponseEntity.ok().body(result);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
