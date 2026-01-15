@@ -29,6 +29,8 @@ public class SecurityGuard {
               .requestMatchers("/swagger-ui.html").permitAll()
               .requestMatchers("/v3/api-docs/**").permitAll()
               .requestMatchers("/swagger-resources/**").permitAll()
+              .requestMatchers("/actuator/**").permitAll()
+              .requestMatchers("/actuator/prometheus").permitAll()
               .requestMatchers("/webjars/**").permitAll();
           auth.anyRequest().authenticated();
         });
